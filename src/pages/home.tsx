@@ -48,6 +48,10 @@ const Home = () => {
       if (res.status === 200) {
         const { msg } = res.data;
         addToast(`${msg}`, "success");
+        setCustomInstructions("");
+        setRawText("");
+        setMaximumTime("");
+        setExtractedUrls([]);
       }
     } catch (error) {
       const errorMessage =
