@@ -1,5 +1,6 @@
 import React from 'react'
-import { useToast } from '../contexts/useToast'
+import { useToast } from '../contexts/useToast';
+import '../styles/components/toast.scss';
 
 const Toast: React.FC = () => {
   const { toasts, removeToast } = useToast()
