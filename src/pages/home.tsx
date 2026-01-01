@@ -9,6 +9,7 @@ const Home = () => {
   const [rawText, setRawText] = useState("");
   const [customInstructions, setCustomInstructions] = useState("");
   const [extractedUrls, setExtractedUrls] = useState<string[]>([]);
+  const [maximumTime, setMaximumTime] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const { addToast } = useToast();
 
@@ -37,6 +38,7 @@ const Home = () => {
         {
           tweetUrls: extractedUrls,
           customInstructions,
+          maximumTime,
         },
         {
           withCredentials: true,
@@ -109,8 +111,8 @@ const Home = () => {
             id="custom-instructions"
             className="url-input"
             placeholder="E.g 1 hour, 2 hours, 30 minutes"
-            value={customInstructions}
-            onChange={(e) => setCustomInstructions(e.target.value)}
+            value={maximumTime}
+            onChange={(e) => setMaximumTime(e.target.value)}
             rows={1}
           />
           <span className="desc">
