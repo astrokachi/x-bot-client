@@ -34,7 +34,7 @@ const Home = () => {
     setIsLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:3002/api/reply",
+        `${import.meta.env.VITE_API_URL}/api/reply`,
         {
           tweetUrls: extractedUrls,
           customInstructions,
