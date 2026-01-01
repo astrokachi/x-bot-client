@@ -4,11 +4,10 @@ import "../styles/login.scss";
 
 const Login = ({ authorize }: { authorize: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
-
   const handleLogin = () => {
     setIsLoading(true);
     const popup = window.open(
-      "http://localhost:3002/auth/authorize",
+      `${import.meta.env.VITE_API_URL}/auth/authorize`,
       "_blank",
       "popup=true"
     );
