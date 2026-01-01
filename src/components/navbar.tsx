@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles/components/navbar.scss";
 import logoutIcon from "../assets/logout.svg";
 
@@ -9,7 +8,7 @@ const Navbar = () => {
         <header>Twitter Bot Manager</header>
 
         <button className="logout">
-          <img src={logoutIcon} alt="logout-icon" />
+          <img src={logoutIcon} alt="logout-icon" />astrokachi
           <span>Logout</span>
         </button>
       </div>
