@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../components/button";
-import { useToast } from "../contexts/useToast";
+import { useToast } from "../hooks/useToast";
 import axios from "axios";
 import "../styles/home.scss";
 import Navbar from "../components/navbar";

@@ -1,20 +1,20 @@
-import React from 'react'
-import { useToast } from '../contexts/useToast';
-import '../styles/components/toast.scss';
+import React from "react";
+import { useToast } from "../hooks/useToast";
+import "../styles/components/toast.scss";
 
 const Toast: React.FC = () => {
-  const { toasts, removeToast } = useToast()
+  const { toasts, removeToast } = useToast();
 
   return (
-    <div className='toast-container'>
-      {toasts.map(toast => (
+    <div className="toast-container">
+      {toasts.map((toast) => (
         <div key={toast.id} className={`toast toast-${toast.type}`}>
-          <div className='toast-content'>
+          <div className="toast-content">
             <span>{toast.message}</span>
             <button
-              className='toast-close'
+              className="toast-close"
               onClick={() => removeToast(toast.id)}
-              aria-label='Close notification'
+              aria-label="Close notification"
             >
               ×
             </button>
@@ -22,7 +22,7 @@ const Toast: React.FC = () => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default Toast
+export default Toast;
