@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import Button from "../components/button";
 import "../styles/login.scss";
+import { useAuth } from "../hooks/useAuth";
 
-const Login = ({ authorize }: { authorize: () => void }) => {
+const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { setIsAuthenticated } = useAuth();
   const handleLogin = () => {
     setIsLoading(true);
     const popup = window.open(
@@ -29,13 +31,13 @@ const Login = ({ authorize }: { authorize: () => void }) => {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data.status === "success") {
-        authorize();
+        setIsAuthenticated(true);
         setIsLoading(false);
       }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [authorize]);
+  }, [setIsAuthenticated]);
 
   return (
     <div className="container">
