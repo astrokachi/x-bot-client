@@ -1,18 +1,19 @@
-import { useState } from "react";
+
 import Toast from "./components/Toast";
 import { ToastProvider } from "./contexts/toast-provider";
 import "./styles/App.scss";
 import Home from "./pages/home";
 import Login from "./pages/login";
+import { useAuth } from "./hooks/useAuth";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   return (
     <ToastProvider>
       <>
         {!isAuthenticated ? (
-          <Login authorize={() => setIsAuthenticated(true)} />
+          <Login />
         ) : (
           <Home />
         )}
