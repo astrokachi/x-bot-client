@@ -74,6 +74,22 @@
   font-weight: 600;
 }
 
+.login-error-banner {
+  margin-bottom: map.get(vars.$spacing, md);
+  padding: 12px 16px;
+  border-radius: map.get(vars.$border-radius, md);
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+.login-error-text {
+  margin: 0;
+  color: #f87171;
+  font-size: map.get(vars.$font-sizes, sm);
+  text-align: center;
+  line-height: 1.5;
+}
+
 .login-button {
   width: 100%;
   padding: map.get(vars.$spacing, md) map.get(vars.$spacing, lg);
