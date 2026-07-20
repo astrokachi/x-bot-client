@@ -1,11 +1,10 @@
 import TypingIndicator from "./typing-indicator";
 import "~/styles/dashboard/posts.scss";
-import { logo } from "../layouts/navigation/desktop-sidebar";
 
 interface RefinedOutputCardProps {
   content: string | null;
   isTyping: boolean;
-  user?: { name?: string; username?: string };
+  user?: { name?: string; username?: string; profile_img_url?: string };
   onPreview: (text: string) => void;
 }
 
@@ -21,8 +20,11 @@ const RefinedOutputCard = ({
     <div className="refined-output-card">
       <div className="refined-output-header">
         <div className="refined-output-user">
-          <img src={logo} alt="vox-logo" height={24} width={24} />
-          {/* <div className="refined-output-avatar" /> */}
+          {user?.profile_img_url ? (
+            <img className="refined-output-avatar" src={user.profile_img_url} alt={user.name ?? "User"} />
+          ) : (
+            <div className="refined-output-avatar" />
+          )}
         </div>
         <span className="refined-output-badge">Standard</span>
       </div>

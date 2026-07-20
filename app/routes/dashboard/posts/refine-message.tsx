@@ -181,8 +181,7 @@ const RefineMessage = () => {
       {previewContent && (
         <PreviewPostModal
           content={previewContent}
-          displayName={user?.name}
-          handle={user?.username ? `@${user.username}` : undefined}
+          user={user}
           onClose={() => setPreviewContent(null)}
         />
       )}

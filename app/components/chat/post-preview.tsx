@@ -8,12 +8,18 @@ import TypingIndicator from "./typing-indicator";
 import PreviewPostModal from "./preview-post-modal";
 import type { Message, Turn } from "~/types";
 
+interface UserPreview {
+  name?: string;
+  username?: string;
+  profile_img_url?: string;
+}
+
 const TONE_LABELS = ["Standard", "Playful", "Educative"];
 
 interface PostPreviewProps {
   turns: Turn[];
   isTyping: boolean;
-  user?: { name?: string; username?: string };
+  user?: { name?: string; username?: string; profile_img_url?: string };
   onRefine?: (message: Message) => void;
 }
 
@@ -124,8 +130,7 @@ const PostPreview = ({ turns, isTyping, user, onRefine }: PostPreviewProps) => {
       {selectedOption && (
         <PreviewPostModal
           content={selectedOption.content}
-          displayName={user?.name}
-          handle={user?.username ? `@${user.username}` : undefined}
+          user={user}
           date={selectedOption.created_at}
           onClose={() => setSelected({})}
           onRefine={(text) => {

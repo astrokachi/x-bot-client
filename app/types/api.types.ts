@@ -21,6 +21,7 @@ export interface User {
   email: string;
   username: string;
   name: string;
+  profile_img_url: string;
   created_at: string;
   updated_at: string;
 }

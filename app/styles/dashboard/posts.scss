@@ -612,6 +612,7 @@
   height: 28px;
   border-radius: 50%;
   background: linear-gradient(135deg, #00528a, #1f0c97);
+  object-fit: cover;
 }
 
 .preview-user-meta {
@@ -997,6 +998,7 @@
   height: 32px;
   border-radius: 50%;
   background: linear-gradient(135deg, #00528a, #1f0c97);
+  object-fit: cover;
 }
 
 .menu-btn {
@@ -1256,6 +1258,7 @@
   border-radius: 50%;
   background: linear-gradient(135deg, #00528a, #1f0c97);
   flex-shrink: 0;
+  object-fit: cover;
 }
 
 .refined-output-badge {

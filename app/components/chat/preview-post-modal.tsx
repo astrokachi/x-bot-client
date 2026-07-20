@@ -13,8 +13,7 @@ import {
 
 interface PreviewPostModalProps {
   content: string;
-  displayName?: string;
-  handle?: string;
+  user?: { name?: string; username?: string; profile_img_url?: string };
   date?: string;
   onClose: () => void;
   onPost?: (text: string) => void;
@@ -23,8 +22,7 @@ interface PreviewPostModalProps {
 
 const PreviewPostModal = ({
   content,
-  displayName = "Username",
-  handle = "@xhandle",
+  user,
   date,
   onClose,
   onPost,
@@ -66,11 +64,15 @@ const PreviewPostModal = ({
 
         <div className="preview-tweet">
           <div className="preview-tweet-user">
-            <div className="preview-avatar" />
+            {user?.profile_img_url ? (
+              <img className="preview-avatar" src={user.profile_img_url} alt={user.name ?? "User"} />
+            ) : (
+              <div className="preview-avatar" />
+            )}
             <div className="preview-user-meta">
-              <span className="preview-username">{displayName}</span>
+              <span className="preview-username">{user?.name ?? "Username"}</span>
               <span className="preview-handle">
-                {handle}
+                {user?.username ? `@${user.username}` : "@xhandle"}
                 {formattedDate ? ` · ${formattedDate}` : ""}
               </span>
             </div>

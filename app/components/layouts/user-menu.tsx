@@ -11,6 +11,7 @@ interface UserMenuProps {
 interface UserData {
   name?: string;
   username?: string;
+  profile_img_url?: string;
 }
 
 const UserMenuContent = ({ user }: { user: UserData }) => {
@@ -25,7 +26,11 @@ const UserMenuContent = ({ user }: { user: UserData }) => {
   return (
     <>
       <div className="user-avatar">
-        <span className="avatar-initials">{initials}</span>
+        {user?.profile_img_url ? (
+          <img src={user.profile_img_url} alt={displayName} />
+        ) : (
+          <span className="avatar-initials">{initials}</span>
+        )}
       </div>
       <div className="user-info">
         <span className="user-name">{displayName}</span>
