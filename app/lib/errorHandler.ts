@@ -28,4 +28,14 @@ export const handleUserError = (err: unknown) => {
   }
 }
 
+const OAUTH_ERROR_MESSAGES: Record<string, string> = {
+  access_denied: 'You denied the authorization request. Please try signing in again.',
+  temporarily_unavailable: 'X authentication is temporarily unavailable. Please try again later.',
+};
+
+export function describeOAuthError(error: string, description?: string): string {
+  if (description) return description;
+  return OAUTH_ERROR_MESSAGES[error] ?? 'Something went wrong during sign-in. Please try again.';
+}
+
 
