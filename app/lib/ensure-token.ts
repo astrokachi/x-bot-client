@@ -14,7 +14,7 @@ export async function fetchRefreshToken(): Promise<string> {
   if (!response.ok) {
     if (response.status === 401) {
       window.location.href = '/logout';
-      throw new Error('Session expired');
+      return new Promise(() => {});
     }
     throw new Error('Token refresh failed');
   }
