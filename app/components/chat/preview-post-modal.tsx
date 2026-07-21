@@ -9,6 +9,8 @@ import {
   ImageIcon,
   CaretDownIcon,
   PencilSimpleLineIcon,
+  CheckCircleIcon,
+  DotsThreeIcon,
 } from "@phosphor-icons/react";
 
 interface PreviewPostModalProps {
@@ -51,7 +53,7 @@ const PreviewPostModal = ({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="preview-modal-header">
-          <h3>Preview post</h3>
+          <h3 className="preview-modal-title">Preview post</h3>
           <button
             type="button"
             className="preview-modal-close"
@@ -71,11 +73,14 @@ const PreviewPostModal = ({
             )}
             <div className="preview-user-meta">
               <span className="preview-username">{user?.name ?? "Username"}</span>
+              <CheckCircleIcon className="preview-verified" size={16} weight="fill" />
               <span className="preview-handle">
-                {user?.username ? `@${user.username}` : "@xhandle"}
-                {formattedDate ? ` · ${formattedDate}` : ""}
+                @{user?.username ?? "xhandle"} · {formattedDate || "Jul 21"}
               </span>
             </div>
+            <button type="button" className="preview-overflow-btn" aria-label="More">
+              <DotsThreeIcon size={18} weight="bold" />
+            </button>
           </div>
 
           <textarea
@@ -86,21 +91,31 @@ const PreviewPostModal = ({
           />
 
           <div className="preview-engagements">
-            <div className="preview-engage-group">
-              <ChatCircleIcon size={17} />
-              <RepeatIcon size={17} />
-              <HeartIcon size={17} />
+            <div className="preview-engage-item">
+              <ChatCircleIcon size={19} weight="regular" />
+              <span className="preview-engage-count">0</span>
             </div>
-            <div className="preview-engage-group">
-              <BookmarkSimpleIcon size={17} />
-              <ShareNetworkIcon size={17} />
+            <div className="preview-engage-item">
+              <RepeatIcon size={19} weight="regular" />
+              <span className="preview-engage-count">0</span>
+            </div>
+            <div className="preview-engage-item">
+              <HeartIcon size={19} weight="regular" />
+              <span className="preview-engage-count">0</span>
+            </div>
+            <div className="preview-engage-item">
+              <BookmarkSimpleIcon size={19} weight="regular" />
+              <span className="preview-engage-count">0</span>
+            </div>
+            <div className="preview-engage-item">
+              <ShareNetworkIcon size={19} weight="regular" />
             </div>
           </div>
         </div>
 
         <div className="preview-modal-footer">
-          <button type="button" className="preview-icon-btn" aria-label="Add image">
-            <ImageIcon size={24} weight="bold" />
+          <button type="button" className="image-btn" aria-label="Add image">
+            <ImageIcon size={18} />
           </button>
 
           <div className="preview-actions">
@@ -112,12 +127,13 @@ const PreviewPostModal = ({
               >
                 Post
               </button>
+              <span className="preview-post-divider" />
               <button
                 type="button"
                 className="preview-post-caret"
                 aria-label="More post options"
               >
-                <CaretDownIcon size={12} weight="bold" />
+                <CaretDownIcon size={12} weight="regular" />
               </button>
             </div>
             {onRefine && (
@@ -126,7 +142,8 @@ const PreviewPostModal = ({
                 className="preview-refine-btn"
                 onClick={() => onRefine(text)}
               >
-                Refine <PencilSimpleLineIcon size={16} />
+                Refine
+                <PencilSimpleLineIcon size={16} weight="regular" />
               </button>
             )}
           </div>

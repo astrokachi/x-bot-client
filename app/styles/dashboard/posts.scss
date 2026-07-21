@@ -605,7 +605,7 @@
   border-radius: map.get(vars.$border-radius, lg);
   background: map.get(vars.$colors, card-fill);
   border: 1px solid map.get(vars.$colors, gray-dark);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   animation: fade-in-scale anim.duration(normal) anim.ease(out);
 }
 
@@ -634,11 +634,10 @@
 .preview-tweet {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
+  gap: 12px;
+  padding: 16px;
   border-radius: map.get(vars.$border-radius, md);
-  background: map.get(vars.$colors, card-fill-dark);
-  border: 1px solid map.get(vars.$colors, card-stroke);
+  background: #000000;
 }
 
 .preview-tweet-user {
@@ -647,9 +646,25 @@
   gap: 12px;
 }
 
+.preview-overflow-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: map.get(vars.$colors, text-secondary);
+  cursor: pointer;
+  transition: color map.get(vars.$transitions, default) ease;
+
+  &:hover {
+    color: map.get(vars.$colors, text-primary);
+  }
+}
+
 .preview-avatar {
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #00528a, #1f0c97);
   object-fit: cover;
@@ -657,65 +672,67 @@
 
 .preview-user-meta {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
 }
 
 .preview-username {
-  font-size: map.get(vars.$font-sizes, xs);
-  font-weight: 500;
-  color: map.get(vars.$colors, text-primary);
+  font-size: 15px;
+  font-weight: 700;
+  color: map.get(vars.$colors, text-light);
+}
+
+.preview-verified {
+  flex-shrink: 0;
+  color: #1d9bf0;
 }
 
 .preview-handle {
-  font-size: map.get(vars.$font-sizes, xxs);
-  color: rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  font-weight: 400;
+  color: map.get(vars.$colors, text-secondary);
 }
 
 .preview-edit-field {
   width: 100%;
-  padding: 8px;
+  padding: 8px 12px;
   resize: none;
-  border-radius: map.get(vars.$border-radius, sm);
-  border: 1px solid map.get(vars.$colors, card-stroke);
+  border: none;
   background: transparent;
-  color: map.get(vars.$colors, text-dim);
+  color: map.get(vars.$colors, text-light);
   font-family: inherit;
-  font-size: map.get(vars.$font-sizes, sm);
-  line-height: 1.45;
-
-  &:focus {
-    outline: none;
-    border-color: map.get(vars.$colors, primary);
-  }
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  outline: none;
 }
 
 .preview-engagements {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: map.get(vars.$colors, text-primary);
+  color: map.get(vars.$colors, text-secondary);
 }
 
-.preview-engage-group {
+.preview-engage-item {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 4px;
+}
+
+.preview-engage-count {
+  font-size: 13px;
+  font-weight: 400;
+  color: map.get(vars.$colors, text-secondary);
+  line-height: 1;
 }
 
 .preview-modal-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.preview-icon-btn {
-  display: inline-flex;
-  padding: 0;
-  background: none;
-  border: none;
-  color: map.get(vars.$colors, text-primary);
-  cursor: pointer;
+  height: 32px;
 }
 
 .preview-actions {
@@ -731,12 +748,19 @@
   overflow: hidden;
 }
 
+.preview-post-divider {
+  width: 2px;
+  background: #00528a;
+}
+
 .preview-post-btn {
-  padding: 6px 16px;
-  border-radius: 0;
+  padding: 6px 14px;
+  border-radius: map.get(vars.$border-radius, full) 0 0 map.get(vars.$border-radius, full);
   background: map.get(vars.$colors, primary-dark);
   border: none;
   color: map.get(vars.$colors, text-primary);
+  font-family: inherit;
+  font-size: map.get(vars.$font-sizes, xs);
   font-weight: 600;
   cursor: pointer;
   transition: background map.get(vars.$transitions, default) ease,
@@ -759,11 +783,10 @@
 .preview-post-caret {
   display: inline-flex;
   align-items: center;
-  padding: 0 8px;
-  border-radius: 0;
+  padding: 0 10px;
+  border-radius: 0 map.get(vars.$border-radius, full) map.get(vars.$border-radius, full) 0;
   background: map.get(vars.$colors, primary-dark);
   border: none;
-  border-left: 1px solid rgba(0, 0, 0, 0.25);
   color: map.get(vars.$colors, text-primary);
   cursor: pointer;
   transition: background map.get(vars.$transitions, default) ease,
@@ -787,23 +810,26 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   border-radius: map.get(vars.$border-radius, full);
   background: transparent;
-  border: 1px solid map.get(vars.$colors, primary-dark);
-  color: map.get(vars.$colors, primary-dark);
-  font-size: map.get(vars.$font-sizes, xs);
+  border: 1px solid rgba(12, 128, 206, 0.5);
+  color: rgba(12, 128, 206, 0.8);
+  font-family: inherit;
+  font-size: map.get(vars.$font-sizes, xxs);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.21em;
   cursor: pointer;
   transition: background map.get(vars.$transitions, default) ease,
     border-color map.get(vars.$transitions, default) ease,
+    color map.get(vars.$transitions, default) ease,
     transform 0.15s ease;
 
   &:hover {
-    background: rgba(map.get(vars.$colors, primary), 0.1);
-    border-color: map.get(vars.$colors, primary);
+    background: rgba(12, 128, 206, 0.1);
+    border-color: map.get(vars.$colors, primary-dark);
+    color: map.get(vars.$colors, primary-dark);
   }
 
   &:active {
@@ -811,12 +837,8 @@
   }
 
   &:focus-visible {
-    outline: 2px solid map.get(vars.$colors, primary);
+    outline: 2px solid map.get(vars.$colors, primary-dark);
     outline-offset: 2px;
-  }
-
-  svg {
-    color: map.get(vars.$colors, text-primary);
   }
 }
 
