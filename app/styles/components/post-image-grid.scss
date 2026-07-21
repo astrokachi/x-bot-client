@@ -1,0 +1,119 @@
+@use "sass:map";
+@use "../variables" as vars;
+
+.post-image-grid {
+  overflow: hidden;
+  border-radius: map.get(vars.$border-radius, xl);
+}
+
+.post-image-grid-inner {
+  display: grid;
+  gap: 2px;
+  background: #000;
+
+  &.count-1 {
+    grid-template-columns: 1fr;
+    max-height: 300px;
+
+    .post-image-grid-img {
+      max-height: 300px;
+    }
+  }
+
+  &.count-2 {
+    grid-template-columns: 1fr 1fr;
+    aspect-ratio: 2 / 1;
+  }
+
+  &.count-3 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    aspect-ratio: 16 / 9;
+
+    > :first-child {
+      grid-row: 1 / -1;
+    }
+  }
+
+  &.count-4 {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.post-image-grid-cell {
+  position: relative;
+  overflow: hidden;
+}
+
+.post-image-grid-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// ─── Strip mode (5+ images) ────────────────────────────────────────────────
+.post-image-grid--strip {
+  overflow: visible;
+  border-radius: 0;
+}
+
+.post-image-grid-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .post-image-grid-cell {
+    flex-shrink: 0;
+    width: 260px;
+    height: 200px;
+    border-radius: map.get(vars.$border-radius, xl);
+    overflow: hidden;
+  }
+
+  .post-image-grid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.post-image-grid-remove {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.85);
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    display: block;
+  }
+}

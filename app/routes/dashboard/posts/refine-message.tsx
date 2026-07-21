@@ -10,6 +10,7 @@ import { ChatForm } from "~/components/chat-form";
 import { chatApi } from "~/api/endpoints";
 import { useApiCall } from "~/hooks/useApiCall";
 import { useConversationSocket } from "~/hooks/useConversationSocket";
+import { useImageFiles } from "~/hooks/useImageFiles";
 import type { ChatGetThreadDto, Turn } from "~/types";
 import "~/styles/dashboard/posts.scss";
 
@@ -41,6 +42,7 @@ const RefineMessage = () => {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [previewContent, setPreviewContent] = useState<string | null>(null);
+  const { images, addFiles, removeFile } = useImageFiles();
 
   const {
     execute: loadThread,
@@ -175,6 +177,9 @@ const RefineMessage = () => {
           maxPrompts={99}
           submitLabel="Refine"
           disabled={awaitingResponse}
+          images={images}
+          onAddFiles={addFiles}
+          onRemoveFile={removeFile}
         />
       </div>
 
@@ -183,6 +188,9 @@ const RefineMessage = () => {
           content={previewContent}
           user={user}
           onClose={() => setPreviewContent(null)}
+          images={images}
+          onAddFiles={addFiles}
+          onRemoveFile={removeFile}
         />
       )}
     </div>

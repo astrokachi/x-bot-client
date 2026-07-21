@@ -312,7 +312,8 @@
 
 .chat-textarea {
   width: 100%;
-  height: 100px;
+  min-height: 52px;
+  max-height: 200px;
   padding: 16px;
   border-radius: map.get(vars.$border-radius, md);
   background: map.get(vars.$colors, gray-dark);
@@ -320,11 +321,13 @@
   color: map.get(vars.$colors, text-primary);
   font-size: map.get(vars.$font-sizes, sm);
   font-family: inherit;
-  resize: vertical;
+  resize: none;
+  overflow-y: auto;
   outline: none;
+  line-height: 20px;
 
   @media (max-width: map.get(vars.$breakpoints, sm)) {
-    height: 80px;
+    min-height: 44px;
     padding: 12px;
     font-size: map.get(vars.$font-sizes, xs);
   }
@@ -334,7 +337,7 @@
   }
 
   &:focus {
-    border-color: map.get(vars.$colors, primary);
+    outline: none;
   }
 }
 
