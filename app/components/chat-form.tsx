@@ -1,4 +1,4 @@
-import { SparkleIcon, XIcon } from "@phosphor-icons/react";
+import { ImageIcon, SparkleIcon, XIcon } from "@phosphor-icons/react";
 import { useEffect, useRef, useState, type ChangeEvent, type KeyboardEvent, type SubmitEvent } from "react";
 
 interface ChatFormProps {
@@ -94,11 +94,24 @@ export const ChatForm = ({
         />
       </div>
       <div className="form-footer">
-        <span className="prompts-count">{promptCount}/{maxPrompts} prompts</span>
-          <button type="submit" className="generate-btn" disabled={disabled}>
-            <SparkleIcon size={18} />
-            <span>{submitLabel}</span>
+        <div className="form-footer-left">
+          <button type="button" className="image-btn" aria-label="Add image">
+            <ImageIcon size={18} />
           </button>
+          <div className="prompts-progress">
+            <div className="progress-track">
+              <div
+                className="progress-fill"
+                style={{ width: `${(promptCount / maxPrompts) * 100}%` }}
+              />
+            </div>
+            <span className="prompts-count">{promptCount}/{maxPrompts} prompts</span>
+          </div>
+        </div>
+        <button type="submit" className="generate-btn" disabled={disabled}>
+          <SparkleIcon size={18} />
+          <span>{submitLabel}</span>
+        </button>
       </div>
     </form>
   );

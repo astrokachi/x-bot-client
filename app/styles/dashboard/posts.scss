@@ -259,18 +259,16 @@
 .chat-form {
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  padding: 20px;
   border-radius: map.get(vars.$border-radius, lg);
   background: map.get(vars.$colors, card-fill);
   border: 1px solid map.get(vars.$colors, card-stroke);
-  overflow: hidden;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .textarea-wrapper {
-  padding: 12px;
-
-  @media (max-width: map.get(vars.$breakpoints, sm)) {
-    padding: 10px;
-  }
+  padding: 0;
 }
 
 .refine-chip {
@@ -314,10 +312,10 @@
 
 .chat-textarea {
   width: 100%;
-  min-height: 64px;
-  padding: 12px;
+  height: 100px;
+  padding: 16px;
   border-radius: map.get(vars.$border-radius, md);
-  background: map.get(vars.$colors, card-fill-dark);
+  background: map.get(vars.$colors, gray-dark);
   border: 1px solid map.get(vars.$colors, card-stroke);
   color: map.get(vars.$colors, text-primary);
   font-size: map.get(vars.$font-sizes, sm);
@@ -326,7 +324,7 @@
   outline: none;
 
   @media (max-width: map.get(vars.$breakpoints, sm)) {
-    min-height: 80px;
+    height: 80px;
     padding: 12px;
     font-size: map.get(vars.$font-sizes, xs);
   }
@@ -344,21 +342,63 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  border-top: 1px solid map.get(vars.$colors, card-stroke);
+  height: 48px;
+}
 
-  @media (max-width: map.get(vars.$breakpoints, sm)) {
-    padding: 8px 12px;
+.form-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.image-btn {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: map.get(vars.$border-radius, lg);
+  border: 1px solid map.get(vars.$colors, card-stroke);
+  background: none;
+  color: map.get(vars.$colors, text-secondary);
+  cursor: pointer;
+  transition: background map.get(vars.$transitions, default) ease,
+    color map.get(vars.$transitions, default) ease;
+
+  &:hover {
+    background: map.get(vars.$overlays, hover-bg);
+    color: map.get(vars.$colors, text-primary);
   }
 }
 
-.prompts-count {
-  font-size: map.get(vars.$font-sizes, sm);
-  color: map.get(vars.$colors, text-secondary);
+.prompts-progress {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90px;
+  height: 32px;
+}
 
-  @media (max-width: map.get(vars.$breakpoints, sm)) {
-    font-size: map.get(vars.$font-sizes, xxs);
-  }
+.progress-track {
+  width: 100%;
+  height: 3px;
+  border-radius: 1.5px;
+  background: map.get(vars.$colors, card-stroke);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 1.5px;
+  background: map.get(vars.$colors, primary);
+  transition: width map.get(vars.$transitions, default) ease;
+}
+
+.prompts-count {
+  font-size: map.get(vars.$font-sizes, xs);
+  line-height: 1;
+  color: map.get(vars.$colors, text-secondary);
 }
 
 .generate-btn {
