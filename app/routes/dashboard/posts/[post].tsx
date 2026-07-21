@@ -7,6 +7,8 @@ import { ChatForm } from "~/components/chat-form";
 import { chatApi } from "~/api/endpoints";
 import { useApiCall } from "~/hooks/useApiCall";
 import { useConversationSocket } from "~/hooks/useConversationSocket";
+import { useImageFiles } from "~/hooks/useImageFiles";
+import { usePost } from "~/hooks/usePost";
 import type { ChatGetMessagesDto, Message, Turn } from "~/types";
 import "~/styles/dashboard/posts.scss";
 
@@ -27,6 +29,8 @@ const Post = () => {
 
   const [turns, setTurns] = useState<Turn[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const { images, addFiles, removeFile, clearFiles } = useImageFiles();
+  const { post, posting } = usePost();
 
   const {
     execute: loadMessages,
@@ -90,6 +94,11 @@ const Post = () => {
     }
   };
 
+  const handlePost = async (text: string, files?: File[]) => {
+    const ok = await post(text, files);
+    if (ok) clearFiles();
+  };
+
   const handleRefine = (message: Message) => {
     navigate(`/posts/${conversationId}/r/${message.id}`, {
       state: { draft: message.content },
@@ -114,6 +123,11 @@ const Post = () => {
           isTyping={isTyping}
           user={user}
           onRefine={handleRefine}
+          onPost={handlePost}
+          posting={posting}
+          images={images}
+          onAddFiles={addFiles}
+          onRemoveFile={removeFile}
         />
       )}
 
@@ -125,6 +139,9 @@ const Post = () => {
           promptCount={promptCount}
           maxPrompts={MAX_PROMPTS}
           disabled={promptCount >= MAX_PROMPTS}
+          images={images}
+          onAddFiles={addFiles}
+          onRemoveFile={removeFile}
         />
       </div>
     </div>

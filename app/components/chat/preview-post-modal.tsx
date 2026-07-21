@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   XIcon,
   ChatCircleIcon,
@@ -12,14 +12,21 @@ import {
   CheckCircleIcon,
   DotsThreeIcon,
 } from "@phosphor-icons/react";
+import PostImageGrid from "~/components/chat/post-image-grid";
+import Spinner from "~/components/spinner";
+import type { SelectedImage } from "~/hooks/useImageFiles";
 
 interface PreviewPostModalProps {
   content: string;
   user?: { name?: string; username?: string; profile_img_url?: string };
   date?: string;
   onClose: () => void;
-  onPost?: (text: string) => void;
-  onRefine?: (text: string) => void;
+  onPost?: (text: string, files?: File[]) => void;
+  onRefine?: (text: string, files?: File[]) => void;
+  onAddFiles?: (files: File[]) => void;
+  onRemoveFile?: (index: number) => void;
+  images?: SelectedImage[];
+  posting?: boolean;
 }
 
 const PreviewPostModal = ({
@@ -29,8 +36,13 @@ const PreviewPostModal = ({
   onClose,
   onPost,
   onRefine,
+  onAddFiles,
+  onRemoveFile,
+  images = [],
+  posting = false,
 }: PreviewPostModalProps) => {
   const [text, setText] = useState(content);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const formattedDate = date
     ? new Date(date).toLocaleDateString(undefined, { month: "short", day: "numeric" })
@@ -43,6 +55,13 @@ const PreviewPostModal = ({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = Array.from(e.target.files || []);
+    if (selected.length === 0) return;
+    onAddFiles?.(selected);
+    e.target.value = "";
+  };
 
   return (
     <div className="preview-modal-overlay" onClick={onClose}>
@@ -90,6 +109,8 @@ const PreviewPostModal = ({
             rows={3}
           />
 
+          <PostImageGrid images={images} onRemove={(i) => onRemoveFile?.(i)} />
+
           <div className="preview-engagements">
             <div className="preview-engage-item">
               <ChatCircleIcon size={19} weight="regular" />
@@ -114,18 +135,27 @@ const PreviewPostModal = ({
         </div>
 
         <div className="preview-modal-footer">
-          <button type="button" className="image-btn" aria-label="Add image">
+          <button type="button" className="image-btn" aria-label="Add image" onClick={() => fileInputRef.current?.click()}>
             <ImageIcon size={18} />
           </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            hidden
+            onChange={handleFileChange}
+          />
 
           <div className="preview-actions">
             <div className="preview-post-split">
               <button
                 type="button"
                 className="preview-post-btn"
-                onClick={() => onPost?.(text)}
+                disabled={posting}
+                onClick={() => onPost?.(text, images.length > 0 ? images.map((img) => img.file) : undefined)}
               >
-                Post
+                {posting ? <Spinner /> : "Post"}
               </button>
               <span className="preview-post-divider" />
               <button
@@ -140,7 +170,7 @@ const PreviewPostModal = ({
               <button
                 type="button"
                 className="preview-refine-btn"
-                onClick={() => onRefine(text)}
+                onClick={() => onRefine(text, images.length > 0 ? images.map((img) => img.file) : undefined)}
               >
                 Refine
                 <PencilSimpleLineIcon size={16} weight="regular" />
