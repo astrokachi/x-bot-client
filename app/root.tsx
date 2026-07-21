@@ -11,6 +11,8 @@ import { useState } from "react";
 import "~/styles/index.scss";
 import "~/styles/components/error-boundary.scss";
 import type { Route } from "./+types/root";
+import { ToastProvider } from "~/contexts/toast-provider";
+import Toast from "~/components/toast";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -52,7 +54,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ToastProvider>
+      <Outlet />
+      <Toast />
+    </ToastProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
