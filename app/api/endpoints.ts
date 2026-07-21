@@ -12,6 +12,7 @@ import type {
   ConversationGetDto,
   ConversationListDto,
   ConversationUpdateDto,
+  PostResponse,
   QueueTweetReplies,
   Turn,
   User,
@@ -34,6 +35,11 @@ export const campaignApi = {
     externalApi.post<QueueTweetReplies>("/api/reply", dto.payload),
   post: (): Promise<void> =>
     externalApi.post<void>("/api/post"),
+};
+
+export const postApi = {
+  post: (formData: FormData): Promise<PostResponse> =>
+    externalApi.post<PostResponse>("/api/post", formData),
 };
 
 export const conversationApi = {

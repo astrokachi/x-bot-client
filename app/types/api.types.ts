@@ -101,6 +101,17 @@ export interface Turn {
   };
 }
 
+// Post API types
+export interface PostResponseData {
+  id: string;
+  text: string;
+  edit_history_tweet_ids: string[];
+}
+
+export interface PostResponse {
+  data: PostResponseData;
+}
+
 // Returned by POST /new/prompt
 export interface Chats {
   id: string;
