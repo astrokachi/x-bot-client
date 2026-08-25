@@ -16,6 +16,7 @@ pnpm preview   # Preview production build via Vite
 **No test framework is installed.** There are no test files, test scripts, or testing dependencies. If adding tests, use Vitest + React Testing Library (matches Vite setup).
 
 To run a single test (once testing is set up):
+
 ```bash
 pnpm vitest run path/to/test.test.tsx
 ```
@@ -32,7 +33,7 @@ pnpm vitest run path/to/test.test.tsx
   ```
 - Use relative imports for sibling/nearby files:
   ```ts
-  import { SidebarNavItems } from './SidebarNavItems';
+  import { SidebarNavItems } from "./SidebarNavItems";
   ```
 - Import order: React/framework → third-party → `~/*` aliases → relative imports.
 - Use `verbatimModuleSyntax` — all type-only imports must use `import type`:
@@ -44,7 +45,6 @@ pnpm vitest run path/to/test.test.tsx
 
 - ESLint flat config with `typescript-eslint`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`.
 - No Prettier configured. Follow existing code formatting in the repo.
-- Single quotes for strings, semicolons present (follow existing file conventions).
 
 ### TypeScript
 
@@ -62,16 +62,16 @@ pnpm vitest run path/to/test.test.tsx
 
 ### Naming Conventions
 
-| Artifact | Convention | Example |
-|---|---|---|
-| Component files | kebab-case | `button.tsx` |
-| Component names | PascalCase | `Button`, `MetricsGrid` |
-| Hook files | camelCase with `use` prefix | `useToast.ts` |
-| Hook names | camelCase, `use` prefix | `useToast` |
-| Context files | kebab-case | `toast-context.tsx`, `toast-provider.tsx` |
-| SCSS files | kebab-case | `metric-card.scss` |
-| Variables/functions | camelCase | `addToast`, `handleClick` |
-| CSS classes | kebab-case (BEM-like) | `.btn-con`, `.login-card-title` |
+| Artifact            | Convention                  | Example                                   |
+| ------------------- | --------------------------- | ----------------------------------------- |
+| Component files     | kebab-case                  | `button.tsx`                              |
+| Component names     | PascalCase                  | `Button`, `MetricsGrid`                   |
+| Hook files          | camelCase with `use` prefix | `useToast.ts`                             |
+| Hook names          | camelCase, `use` prefix     | `useToast`                                |
+| Context files       | kebab-case                  | `toast-context.tsx`, `toast-provider.tsx` |
+| SCSS files          | kebab-case                  | `metric-card.scss`                        |
+| Variables/functions | camelCase                   | `addToast`, `handleClick`                 |
+| CSS classes         | kebab-case (BEM-like)       | `.btn-con`, `.login-card-title`           |
 
 ### Components
 
@@ -138,8 +138,20 @@ pnpm vitest run path/to/test.test.tsx
 - Never import server-only code into client components.
 
 ### Philosophy
-- You are a senior frontend engineer that tends to focus a lot on how systems scale on the frontend — not just visually, but in terms of state, data flow, and maintainability.
-- Make sure maintainability is prioritized. 
-- Nothing changes should be easy, I shouldn't have to open multiple files to make a single change, both design wise (UI) and engineering wise.
+
+- Focus a lot on how systems scale on the frontend— not just visually, but in terms of state, data flow, and maintainability.
+- Make sure maintainability is prioritized.
+- Changes should be easy, I shouldn't have to open multiple files to make a single change, both design wise (UI) and engineering wise.
 - Everything should feel pluggable, like legos, components should have minimal dependencies, so that bugs can be isolated easily.
 - Design should be mobile first and prioritize mobile responsiveness.
+- Ensure components follow single responsibility principle. A components showing UI should not handle data and/or error, they should be abstracted in very clean way so that the UI components can only use data handled by other hooks/components/files; same goes with errors.
+  Prioritize clean architecture when building, consider what responsibility a component is handling, think of the main function it is serving and ensure it does that and only that. "Do one thing and do it extremely well"
+
+
+### Do this for every prompt. 
+
+How to approach problems:
+- Outline the steps
+- List the risks 
+- Tell me what files you'll need to change
+- Wait for my approval

@@ -5,9 +5,10 @@ interface AgentResponseProps {
   id: string;
   content: string;
   type?: string;
+  profileImgUrl?: string;
 }
 
-const AgentResponse = ({ content, type }: AgentResponseProps) => {
+const AgentResponse = ({ content, type, profileImgUrl }: AgentResponseProps) => {
   const { parts } = formatContent(content, type);
 
   return (
@@ -17,7 +18,11 @@ const AgentResponse = ({ content, type }: AgentResponseProps) => {
           <div key={i} className="post-card">
             <div className="post-header">
               <div className="avatar-wrapper">
-                <div className="avatar-gradient" />
+                {profileImgUrl ? (
+                  <img className="avatar-gradient" src={profileImgUrl} alt="User" />
+                ) : (
+                  <div className="avatar-gradient" />
+                )}
               </div>
               <button className="menu-btn">⋯</button>
             </div>

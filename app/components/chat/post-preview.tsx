@@ -6,18 +6,30 @@ import {
 } from "@phosphor-icons/react";
 import TypingIndicator from "./typing-indicator";
 import PreviewPostModal from "./preview-post-modal";
+import type { SelectedImage } from "~/hooks/useImageFiles";
 import type { Message, Turn } from "~/types";
+
+interface UserPreview {
+  name?: string;
+  username?: string;
+  profile_img_url?: string;
+}
 
 const TONE_LABELS = ["Standard", "Playful", "Educative"];
 
 interface PostPreviewProps {
   turns: Turn[];
   isTyping: boolean;
-  user?: { name?: string; username?: string };
+  user?: { name?: string; username?: string; profile_img_url?: string };
   onRefine?: (message: Message) => void;
+  onPost?: (text: string, files?: File[]) => Promise<void>;
+  onAddFiles?: (files: File[]) => void;
+  onRemoveFile?: (index: number) => void;
+  images?: SelectedImage[];
+  posting?: boolean;
 }
 
-const PostPreview = ({ turns, isTyping, user, onRefine }: PostPreviewProps) => {
+const PostPreview = ({ turns, isTyping, user, onRefine, onPost, onAddFiles, onRemoveFile, images, posting }: PostPreviewProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [selected, setSelected] = useState<Record<string, Message>>({});
 
@@ -35,6 +47,11 @@ const PostPreview = ({ turns, isTyping, user, onRefine }: PostPreviewProps) => {
   const showTyping =
     isTyping &&
     (total === 0 || (activeIndex === total - 1 && options.length === 0));
+
+  const handlePost = async (text: string, files?: File[]) => {
+    await onPost?.(text, files);
+    setSelected({});
+  };
 
   const goPrev = () => setActiveIndex((i) => Math.max(0, i - 1));
   const goNext = () => setActiveIndex((i) => Math.min(total - 1, i + 1));
@@ -124,13 +141,17 @@ const PostPreview = ({ turns, isTyping, user, onRefine }: PostPreviewProps) => {
       {selectedOption && (
         <PreviewPostModal
           content={selectedOption.content}
-          displayName={user?.name}
-          handle={user?.username ? `@${user.username}` : undefined}
+          user={user}
+          posting={posting}
           date={selectedOption.created_at}
           onClose={() => setSelected({})}
+          onPost={handlePost}
           onRefine={(text) => {
             onRefine?.({ ...selectedOption, content: text });
           }}
+          images={images}
+          onAddFiles={onAddFiles}
+          onRemoveFile={onRemoveFile}
         />
       )}
     </div>

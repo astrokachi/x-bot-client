@@ -3,6 +3,7 @@ import { useNavigate, useRouteLoaderData } from "react-router";
 import type { clientLoader as dashboardLoader } from '~/routes/dashboard/index';
 import "~/styles/dashboard/posts.scss";
 import { ChatForm } from "~/components/chat-form";
+import { useImageFiles } from "~/hooks/useImageFiles";
 import { chatApi } from "~/api/endpoints";
 
 const TRENDING_TOPICS = [
@@ -19,18 +20,20 @@ const NewPost = () => {
   const navigate = useNavigate();
   const dashboardData = useRouteLoaderData<typeof dashboardLoader>('routes/dashboard/index');
   const user = dashboardData?.user;
+  const { images, addFiles, removeFile, clearFiles } = useImageFiles();
 
   const handleTopicClick = (topic: string) => {
     setSuggestion(`Create a new x post on ${topic}`);
   };
 
-  const handleFormSubmit = async (content: string) => {
+  const handleFormSubmit = async (_content: string) => {
     setLoading(true);
     setError(null);
     try {
       const conversation = await chatApi.createWithPrompt({
-        payload: { content, type: "MULTIPLE" },
+        payload: { content: _content, type: "MULTIPLE" },
       });
+      clearFiles();
       navigate(`/posts/${conversation.id}`);
     } catch {
       setError("Failed to create conversation");
@@ -64,7 +67,13 @@ const NewPost = () => {
           </div>
         </div>
         {error && <div className="error-message">{error}</div>}
-        <ChatForm suggestion={suggestion} onSubmit={handleFormSubmit} />
+        <ChatForm
+          suggestion={suggestion}
+          onSubmit={handleFormSubmit}
+          images={images}
+          onAddFiles={addFiles}
+          onRemoveFile={removeFile}
+        />
         {loading && <div className="loading-message">Creating conversation...</div>}
       </div>
     </div>

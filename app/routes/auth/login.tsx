@@ -1,14 +1,20 @@
-import { redirect } from "react-router";
+import { redirect, useLoaderData } from "react-router";
+
 import Button from "~/components/button";
-import "~/styles/login.scss";
-import type { Route } from "./+types/login";
 import { authApi } from "~/api/endpoints";
 import { isTokenSet, setAccessToken } from "~/lib/auth";
+import { describeOAuthError } from "~/lib/errorHandler";
+import "~/styles/login.scss";
+
+import type { Route } from "./+types/login";
+
 const logo = "/vox.png";
 
 export async function clientLoader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
   const accessToken = url.searchParams.get("accessToken");
+  const error = url.searchParams.get("error");
+  const errorDescription = url.searchParams.get("error_description");
 
   if (accessToken) {
     setAccessToken(accessToken);
@@ -18,9 +24,18 @@ export async function clientLoader({ request }: Route.LoaderArgs) {
   if (isTokenSet()) {
     return redirect("/");
   }
+
+  if (error) {
+    return { error: describeOAuthError(error, errorDescription ?? undefined) };
+  }
+
+  return { error: null };
 }
 
 const Login = () => {
+  const loaderData = useLoaderData<typeof clientLoader>();
+  const authError = loaderData?.error ?? null;
+
   const handleLogin = () => {
     window.location.href = authApi.authorize();
   };
@@ -34,6 +49,13 @@ const Login = () => {
 
       <div className="login-card">
         <h2 className="login-card-title">Sign in to continue</h2>
+
+        {authError && (
+          <div className="login-error-banner">
+            <p className="login-error-text">{authError}</p>
+          </div>
+        )}
+
         <div className="btn-wrapper">
           <Button onClick={handleLogin} withIcon>
             Continue with X

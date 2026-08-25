@@ -21,6 +21,7 @@ export interface User {
   email: string;
   username: string;
   name: string;
+  profile_img_url: string;
   created_at: string;
   updated_at: string;
 }
@@ -98,6 +99,17 @@ export interface Turn {
     type: ChatMessageType;
     options: Message[];
   };
+}
+
+// Post API types
+export interface PostResponseData {
+  id: string;
+  text: string;
+  edit_history_tweet_ids: string[];
+}
+
+export interface PostResponse {
+  data: PostResponseData;
 }
 
 // Returned by POST /new/prompt

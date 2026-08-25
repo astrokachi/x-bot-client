@@ -5,9 +5,14 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useNavigate,
 } from "react-router";
+import { useState } from "react";
+import "~/styles/index.scss";
+import "~/styles/components/error-boundary.scss";
 import type { Route } from "./+types/root";
-import "./styles/index.scss";
+import { ToastProvider } from "~/contexts/toast-provider";
+import Toast from "~/components/toast";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -49,34 +54,72 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <ToastProvider>
+      <Outlet />
+      <Toast />
+    </ToastProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
-  let message = "Oops!";
-  let details = "An unexpected error occurred.";
+  const navigate = useNavigate();
+  const [showStack, setShowStack] = useState(false);
+
+  let code: string | null = null;
+  let title = "Something went wrong";
+  let details = "An unexpected error occurred. Please try again.";
   let stack: string | undefined;
 
   if (isRouteErrorResponse(error)) {
-    message = error.status === 404 ? "404" : "Error";
-    details =
-      error.status === 404
-        ? "The requested page could not be found."
-        : error.statusText || details;
-  } else if (import.meta.env.DEV && error && error instanceof Error) {
+    code = String(error.status);
+    if (error.status === 404) {
+      title = "Page not found";
+      details = "The page you are looking for does not exist.";
+    } else if (error.status === 401) {
+      title = "Session expired";
+      details = "Please sign in to continue.";
+    } else {
+      title = `Error ${error.status}`;
+      details = error.statusText || details;
+    }
+  } else if (error instanceof Error) {
     details = error.message;
-    stack = error.stack;
+    if (import.meta.env.DEV) stack = error.stack;
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
-      <h1>{message}</h1>
+    <div className="error-boundary">
+      {code && <div className="error-boundary-code">{code}</div>}
+      <h1>{title}</h1>
       <p>{details}</p>
+
+      <div className="error-boundary-actions">
+        <button
+          className="error-boundary-btn error-boundary-btn--primary"
+          onClick={() => window.location.reload()}
+        >
+          Try again
+        </button>
+        <button
+          className="error-boundary-btn error-boundary-btn--secondary"
+          onClick={() => navigate("/")}
+        >
+          Go home
+        </button>
+      </div>
+
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
-          <code>{stack}</code>
-        </pre>
+        <div className="error-boundary-details">
+          <button
+            className="error-boundary-toggle"
+            onClick={() => setShowStack((s) => !s)}
+          >
+            {showStack ? "Hide" : "Show"} details
+          </button>
+          {showStack && <pre className="error-boundary-stack">{stack}</pre>}
+        </div>
       )}
-    </main>
+    </div>
   );
 }

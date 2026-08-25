@@ -1,80 +1,117 @@
 @use "sass:map";
 @use "../variables" as vars;
+@use "../animations" as anim;
 
 .toast-container {
   position: fixed;
-  bottom: map.get(vars.$spacing, lg);
+  top: map.get(vars.$spacing, lg);
   right: map.get(vars.$spacing, lg);
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: map.get(vars.$spacing, md);
-  max-width: 400px;
+  gap: map.get(vars.$spacing, sm);
+  max-width: 380px;
+  pointer-events: none;
 }
 
 .toast {
   display: flex;
   align-items: center;
+  gap: map.get(vars.$spacing, sm);
   padding: map.get(vars.$spacing, md);
-  border-radius: map.get(vars.$border-radius, md);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  animation: slideIn 0.3s ease-out;
+  padding-left: map.get(vars.$spacing, lg);
+  border-radius: map.get(vars.$border-radius, lg);
+  background: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+
+  animation: toast-enter 0.4s anim.ease(spring) both;
+
+  &.toast--removing {
+    animation: toast-exit 0.25s anim.ease(in) both;
+  }
 }
 
-@keyframes slideIn {
+.toast-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+}
+
+.toast--success .toast-accent {
+  background: map.get(vars.$colors, primary);
+}
+
+.toast--error .toast-accent {
+  background: #f44336;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+}
+
+.toast--success .toast-icon {
+  color: map.get(vars.$colors, primary);
+}
+
+.toast--error .toast-icon {
+  color: #f44336;
+}
+
+.toast-message {
+  flex: 1;
+  font-size: map.get(vars.$font-sizes, sm);
+  color: map.get(vars.$colors, text-light);
+  line-height: 1.4;
+}
+
+.toast-close {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: map.get(vars.$colors, text-secondary);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: map.get(vars.$border-radius, sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+    color: map.get(vars.$colors, text-primary);
+  }
+}
+
+@keyframes toast-enter {
   from {
-    transform: translateX(400px);
+    transform: translateX(calc(100% + map.get(vars.$spacing, lg)));
     opacity: 0;
   }
-
   to {
     transform: translateX(0);
     opacity: 1;
   }
 }
 
-.toast-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: map.get(vars.$spacing, md);
-  width: 100%;
-}
-
-.toast-success {
-  background-color: map.get(vars.$colors, success);
-  color: map.get(vars.$colors, text-primary);
-  border-left: 4px solid map.get(vars.$colors, success-dark);
-}
-
-.toast-error {
-  background-color: map.get(vars.$colors, error);
-  color: map.get(vars.$colors, text-primary);
-  border-left: 4px solid map.get(vars.$colors, error-dark);
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 1.5em;
-  cursor: pointer;
-  padding: 0;
-  width: 1.5rem;
-  height: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: opacity 0.2s;
-
-  &:hover {
-    opacity: 0.8;
+@keyframes toast-exit {
+  from {
+    transform: translateX(0);
+    opacity: 1;
   }
-}
-
-@media (prefers-color-scheme: light) {
-  .toast {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  to {
+    transform: translateX(calc(100% + map.get(vars.$spacing, lg)));
+    opacity: 0;
   }
 }
